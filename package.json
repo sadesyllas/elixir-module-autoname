@@ -2,8 +2,16 @@
     "name": "elixir-module-autoname",
     "displayName": "elixir-module-autoname",
     "description": "Automatically fill in a module's name based on the path to the file",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "sadesyllas",
+    "homepage": "https://github.com/sadesyllas/elixir-module-autoname/blob/master/README.md",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sadesyllas/elixir-module-autoname.git"
+    },
+    "bugs": {
+        "url": "https://github.com/sadesyllas/elixir-module-autoname/issues"
+    },
     "engines": {
         "vscode": "^1.22.0"
     },
@@ -15,6 +23,17 @@
     ],
     "main": "./out/src/extension",
     "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "elixir-module-autoname configuration",
+            "properties": {
+                "elixirModuleAutoname.mappings": {
+                    "type": "object",
+                    "default": {},
+                    "description": "Mappings for configuring custom path names, e.g., instead of Rabbitmq, use RabbitMQ"
+                }
+            }
+        },
         "commands": [
             {
                 "command": "extension.elixirModuleAutoname",

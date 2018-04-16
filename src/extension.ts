@@ -19,6 +19,15 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
+        const mappingsTmp = <{string: string}>vscode.workspace.getConfiguration('elixirModuleAutoname').get('mappings');
+        let mappings = {};
+
+        for (const key in mappingsTmp) {
+            mappings[key.toLowerCase()] = mappingsTmp[key];
+        }
+
+        let x = 1;
+
         const moduleName =
             (<string[]>filePath
                 .reduceRight((acc, val, _idx, _arr) => {
@@ -29,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
                         return acc;
                     }
 
-                    if (val === 'lib') {
+                    if (val === 'lib' || val === 'test') {
                         return [true, pathParts];
                     }
 
@@ -39,11 +48,17 @@ export function activate(context: vscode.ExtensionContext) {
                 }, [false, <string[]>[]])[1])
                 .reverse()
                 .map(pathPart => {
-                    return pathPart
-                        .replace(/\.[^.]+/, '')
-                        .split(/_/)
-                        .map(pathSubPart => `${pathSubPart[0].toUpperCase()}${pathSubPart.substr(1)}`)
-                        .join('');
+                    const pathPartFixed =
+                        pathPart
+                            .replace(/\.[^.]+/, '')
+                            .split(/_/)
+                            .map(pathSubPart => {
+                                return mappings[pathSubPart.toLowerCase()] ||
+                                    `${pathSubPart[0].toUpperCase()}${pathSubPart.substr(1)}`;
+                            })
+                            .join('');
+
+                    return mappings[pathPartFixed.toLowerCase()] || pathPartFixed;
                 })
                 .join('.');
 

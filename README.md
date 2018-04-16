@@ -20,6 +20,10 @@ None
 
 ## Release Notes
 
+### 0.0.2
+
+feat(app): support configurable mappings
+
 ### 0.0.1
 
 init(app)
